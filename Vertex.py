@@ -25,11 +25,10 @@ class Vertex():
 
 
     def remove_neighbor(self, neighbor_key):    #disconnects two vertices
-
         neighbor = next((v for v in self.graph.vertexes if v.key == neighbor_key), None)
         self.neighbors.pop(neighbor)
-        neighbor.neighbors.pop(self)
-    
+        if self.graph.type == "Unordered":      #also removes the connection from the other vertex if edge is unordered
+            neighbor.neighbors.pop(self)
 
     def get_weight(self, neighbor):             #returns weight of edge connecting node and its neighbor
         return self.neighbors[neighbor].weight
@@ -40,3 +39,7 @@ class Vertex():
     
     def get_degree(self):                       #returns the degree of a vertex (how many outgoing edges it has)
         return len(self.get_neighbors())
+    
+    def print_neighbors(self):                  #augmented .get_neigbhors() for printing into console
+        for n in self.neighbors:
+            print(n)

@@ -15,11 +15,12 @@ class GraphTools():
                 if neighbor not in complete:
                     dfs_recursive(neighbor)
 
-        def dfs_recursive_search(vertex):   #searches for a specified vertex, if found returns the path, if not returns the whole path walked
+        def dfs_recursive_search(vertex):   #searches for a specified vertex, if found returns the path, if not returns the whole path
             complete.add(vertex)
             path.append(vertex.key)
             
             if vertex.key == end_vertex_key:
+                print("Path found!")
                 return True
             
             for neighbor in vertex.get_neighbors():
@@ -27,14 +28,13 @@ class GraphTools():
                     if dfs_recursive_search(neighbor):
                         return True
                     
-            path.pop()
             return False
         
-        if end_vertex == None:
+        if not end_vertex:
             dfs_recursive(start_vertex)
 
-        else:
-            if not dfs_recursive_search(start_vertex):
+        elif end_vertex:
+            if not dfs_recursive_search(start_vertex): #returns path and prints "Path found!" if path found, this takes care of the other possibility
                 print("Path not found")
 
         return path
@@ -42,18 +42,17 @@ class GraphTools():
 
 
     @staticmethod
-    def breadth_first(graph, start_vertex_key, end_vertex_key = None):
+    def breadth_first(graph, start_vertex_key, end_vertex_key = None):  #if no end vertex specified, searches the whole graph
         path = []
-        queue = []
-        complete = set()
+        queue = []  #stores the queue of searching, works FIFO
+        complete = set()    
         start_vertex = next((v for v in graph.vertexes if v.key == start_vertex_key), None)
         end_vertex = next((v for v in graph.vertexes if v.key == end_vertex_key), None)
-
 
         queue.append(start_vertex)
         complete.add(start_vertex)
 
-        if end_vertex == None:
+        if not end_vertex:  #searches the whole graph, works when no end vertex is specified
             while queue:
                 vertex = queue.pop(0)
                 path.append(vertex.key)
@@ -65,19 +64,24 @@ class GraphTools():
             
             return path
         
-        elif end_vertex != None:
+        elif end_vertex:    #searches the graph for a specific vertex
             while queue:
                 vertex = queue.pop(0)
                 path.append(vertex.key)
 
-                if vertex.key == end_vertex_key:
-                    print("Path found!")
-                    return path
+                # if vertex.key == end_vertex_key: 
+                #     print("Path found!")
+                #     return path
 
                 for v in vertex.get_neighbors():
-                    if v not in complete:
-                        complete.add(v)
+                    if v.key not in complete and v != end_vertex:
+                        complete.add(v.key)
                         queue.append(v)
+
+                    elif v.key not in complete and v == end_vertex:
+                        path.append(v.key) 
+                        print("Path found!")
+                        return path
 
             print("Path not found.")
             return path
