@@ -16,10 +16,10 @@ def main():
     node1.add_neighbor(2)
     node2.add_neighbor(3)
     node3.add_neighbor(4)
-    node4.add_neighbor(5)
+    node4.add_neighbor(0)
     node5.add_neighbor(0)
 
-    dfsresult = GraphTools.GraphTools.depth_first(graph, 0)
+    dfsresult = GraphTools.GraphTools.depth_first(graph, 0, 6)
     print(dfsresult)
 
     bfsresult = GraphTools.GraphTools.breadth_first(graph, 0)

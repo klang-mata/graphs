@@ -5,7 +5,7 @@ class GraphTools():
         complete = set()
         path = []
         start_vertex = next((v for v in graph.vertexes if v.key == start_vertex_key), None)
-        end_vertex = next((v for v in graph.vertexes if v.key == end_vertex_key), None)
+        end_vertex = next((v for v in graph.vertexes if v.key == end_vertex_key), "0")
 
         def dfs_recursive(vertex):    #recursively searches the whole graph using DFS
             complete.add(vertex)
@@ -15,7 +15,7 @@ class GraphTools():
                 if neighbor not in complete:
                     dfs_recursive(neighbor)
 
-        def dfs_recursive_search(vertex):   #searches for a specified vertex, if found returns the path, if not returns the whole path
+        def dfs_recursive_search(vertex):   #searches for a specified vertex, if found returns the path
             
             complete.add(vertex)
             path.append(vertex.key)
@@ -32,12 +32,15 @@ class GraphTools():
             path.pop()
             return False
         
-        if not end_vertex:
+        if not end_vertex:                      #if no end vertex specified
             dfs_recursive(start_vertex)
 
-        elif end_vertex:
+        elif end_vertex != "0":
             if not dfs_recursive_search(start_vertex): #returns path and prints "Path found!" if path found, this takes care of the other possibility
                 print("Path not found")
+
+        elif end_vertex == "0":
+            print("No vertex with this key")
 
         return path
     
