@@ -16,6 +16,7 @@ class GraphTools():
                     dfs_recursive(neighbor)
 
         def dfs_recursive_search(vertex):   #searches for a specified vertex, if found returns the path, if not returns the whole path
+            
             complete.add(vertex)
             path.append(vertex.key)
             
@@ -28,6 +29,7 @@ class GraphTools():
                     if dfs_recursive_search(neighbor):
                         return True
                     
+            path.pop()
             return False
         
         if not end_vertex:

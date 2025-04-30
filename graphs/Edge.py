@@ -1,4 +1,15 @@
-class UnorderedEdge():      #used exclusively with graph type Unordered
+from abc import abstractmethod
+
+class Edge():
+
+    def __init__(self):
+        raise TypeError("Cannot instantiate this class directly.")
+
+    @abstractmethod
+    def __repr__(self):
+        pass
+
+class UnorderedEdge(Edge):      #used exclusively with graph type Unordered
     def __init__(self, vertex1, vertex2, weight):
         self.weight = weight
         self.vertexes = {vertex1, vertex2} #stored as a set
@@ -6,7 +17,7 @@ class UnorderedEdge():      #used exclusively with graph type Unordered
     def __repr__(self):
         return f"(Unordered edge connecting {self.vertexes} with weight {self.weight})"
 
-class OrderedEdge():        #used exclusively with graph type Ordered
+class OrderedEdge(Edge):        #used exclusively with graph type Ordered
     def __init__(self, vertex1, vertex2, weight):
         self.weight = weight
         self.vertexes = (vertex1, vertex2) #stored as a tuple

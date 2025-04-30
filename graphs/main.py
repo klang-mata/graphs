@@ -10,20 +10,19 @@ def main():
     node3 = Vertex.Vertex(graph)
     node4 = Vertex.Vertex(graph)
     node5 = Vertex.Vertex(graph)
-    node6 = Vertex.Vertex(graph)
 
     node0.add_neighbor(1)
-    node0.add_neighbor(2)
-    node1.add_neighbor(3)
-    node2.add_neighbor(4)
-    node3.add_neighbor(5)
-    node4.add_neighbor(6)
+    node0.add_neighbor(3)
+    node1.add_neighbor(2)
+    node2.add_neighbor(3)
+    node3.add_neighbor(4)
+    node4.add_neighbor(5)
     node5.add_neighbor(0)
 
-    dfsresult = GraphTools.GraphTools.depth_first(graph, 0, 2)
+    dfsresult = GraphTools.GraphTools.depth_first(graph, 0)
     print(dfsresult)
 
-    bfsresult = GraphTools.GraphTools.breadth_first(graph, 0, 2)
+    bfsresult = GraphTools.GraphTools.breadth_first(graph, 0)
     print(bfsresult)
 
 
@@ -31,7 +30,7 @@ main()
 
 #TODO:
 #   use vertex or vertex_key for adding edges? (probably vertex_key but its harder to implement) - done
-#   depth first search - DOESNT RETURN CORRECT PATH WHEN SEARCHING FOR A VERTEX
+#   depth first search - done
 #   breadth first search - done
 #   dijkstra
 #   detect cycles
