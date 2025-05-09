@@ -5,6 +5,7 @@ class Graph():
     """
 
     def __init__(self):
+        self.edges = {}     #stores edges and the connected vertexes as a dictionary
         self.vertexes = []  #lists all created vertexes
         self.counter = 0    #assigns key numbers to vertexes
 

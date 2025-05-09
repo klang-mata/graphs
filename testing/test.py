@@ -24,6 +24,9 @@ def main():
     print(bfsresult)
 
 
+    node0.remove_neighbor(1)
+    node0.print_neighbors()
+
 #if __name__ == "main":
 main()
 

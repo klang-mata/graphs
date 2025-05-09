@@ -25,9 +25,10 @@ class UnorderedEdge(Edge):
     Stores the connected vertexes as a set.
     """
 
-    def __init__(self, vertex1, vertex2, weight):
+    def __init__(self, graph, vertex1, vertex2, weight):
         self.weight = weight
         self.vertexes = {vertex1, vertex2}
+        graph.edges[self] = self.vertexes
 
     def __repr__(self):
         return f"(Unordered edge connecting {self.vertexes} with weight {self.weight})"
@@ -41,9 +42,10 @@ class OrderedEdge(Edge):
     Instance is created when using the OrderedGraph class. Stores the connected vertexes as a tuple.
     """
 
-    def __init__(self, vertex1, vertex2, weight):
+    def __init__(self, graph, vertex1, vertex2, weight):
         self.weight = weight
-        self.vertexes = (vertex1, vertex2) #stored as a tuple
+        self.vertexes = (vertex1, vertex2)
+        graph.edges[self] = self.vertexes
 
     def __repr__(self):
         return f"(Ordered edge connecting {self.vertexes[0]} to {self.vertexes[1]} with weight {self.weight})"
