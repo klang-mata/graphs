@@ -1,11 +1,7 @@
-Metadata-Version: 2.4
+Metadata-Version: 2.1
 Name: graphs
 Version: 0.1
 Summary: A library for graph operations
 Home-page: https://github.com/klang-mata/graphs
 Author: Matej Klang
 Author-email: klangm@vscht.cz
-Dynamic: author
-Dynamic: author-email
-Dynamic: home-page
-Dynamic: summary

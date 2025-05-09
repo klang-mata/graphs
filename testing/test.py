@@ -1,12 +1,13 @@
+from graphs import (vertex, edge, graph, graph_tools)
 
 def main():
-    graph = Graph()
-    node0 = Vertex(graph)
-    node1 = Vertex(graph)
-    node2 = Vertex(graph)
-    node3 = Vertex(graph)
-    node4 = Vertex(graph)
-    node5 = Vertex(graph)
+    graph1 = graph.UnorderedGraph()
+    node0 = vertex.Vertex(graph1)
+    node1 = vertex.Vertex(graph1)
+    node2 = vertex.Vertex(graph1)
+    node3 = vertex.Vertex(graph1)
+    node4 = vertex.Vertex(graph1)
+    node5 = vertex.Vertex(graph1)
 
     node0.add_neighbor(1)
     node0.add_neighbor(3)
@@ -16,15 +17,15 @@ def main():
     node4.add_neighbor(0)
     node5.add_neighbor(0)
 
-    dfsresult = GraphTools.GraphTools.depth_first(graph, 0, 4)
+    dfsresult = graph_tools.GraphTools.depth_first(graph1, 0, 4)
     print(dfsresult)
 
-    bfsresult = GraphTools.GraphTools.breadth_first(graph, 0)
+    bfsresult = graph_tools.GraphTools.breadth_first(graph1, 0)
     print(bfsresult)
 
 
-if __name__ == "main":
-    main()
+#if __name__ == "main":
+main()
 
 #TODO:
 #   use vertex or vertex_key for adding edges? (probably vertex_key but its harder to implement) - done
