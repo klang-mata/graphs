@@ -1,4 +1,7 @@
-import Edge
+from .edge import Edge
+from .graph import UnorderedGraph
+from .graph import OrderedGraph
+
 class Vertex():
     def __init__(self, graph):
         self.graph = graph 
@@ -14,12 +17,12 @@ class Vertex():
 
         neighbor = next((v for v in self.graph.vertexes if v.key == neighbor_key), None)
         if neighbor != self:
-            if self.graph.type == "Unordered":
+            if (type(self.graph) is UnorderedGraph):
                 edge = Edge.UnorderedEdge(self, neighbor, weight)
                 self.neighbors[neighbor] = edge
                 neighbor.neighbors[self] = edge
 
-            elif self.graph.type == "Ordered":
+            elif (type(self.graph) is OrderedGraph):
                 edge = Edge.OrderedEdge(self, neighbor, weight)
                 self.neighbors[neighbor] = edge
 
@@ -27,7 +30,7 @@ class Vertex():
     def remove_neighbor(self, neighbor_key):    #disconnects two vertices
         neighbor = next((v for v in self.graph.vertexes if v.key == neighbor_key), None)
         self.neighbors.pop(neighbor)
-        if self.graph.type == "Unordered":      #also removes the connection from the other vertex if edge is unordered
+        if (type(self.graph) is UnorderedGraph):      #also removes the connection from the other vertex if edge is unordered
             neighbor.neighbors.pop(self)
 
     def get_weight(self, neighbor):             #returns weight of edge connecting node and its neighbor
