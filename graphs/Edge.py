@@ -1,4 +1,6 @@
 from abc import abstractmethod, ABC
+from .graph import Graph
+from .vertex import Vertex
 
 #LM: included ABC class inheritance
 class Edge(ABC):
@@ -6,7 +8,6 @@ class Edge(ABC):
     """
     Class not meant to be instantiated, serves as a parent to UnorderedEdge and OrderedEdge child classes
     """
-
 
     def __init__(self):
         raise TypeError("Cannot instantiate this class directly.")
@@ -17,7 +18,6 @@ class Edge(ABC):
         pass
 
 
-
 class UnorderedEdge(Edge):
 
     """
@@ -25,7 +25,7 @@ class UnorderedEdge(Edge):
     Stores the connected vertexes as a set.
     """
 
-    def __init__(self, graph, vertex1, vertex2, weight):
+    def __init__(self, graph : Graph, vertex1 : Vertex, vertex2 : Vertex, weight : int = 1):
         self.weight = weight
         self.vertexes = {vertex1, vertex2}
         graph.edges[self] = self.vertexes
@@ -34,7 +34,6 @@ class UnorderedEdge(Edge):
         return f"(Unordered edge connecting {self.vertexes} with weight {self.weight})"
     
 
-
 class OrderedEdge(Edge):
 
     """
@@ -42,7 +41,7 @@ class OrderedEdge(Edge):
     Instance is created when using the OrderedGraph class. Stores the connected vertexes as a tuple.
     """
 
-    def __init__(self, graph, vertex1, vertex2, weight):
+    def __init__(self, graph : Graph, vertex1 : Vertex, vertex2 : Vertex, weight : int = 1):
         self.weight = weight
         self.vertexes = (vertex1, vertex2)
         graph.edges[self] = self.vertexes

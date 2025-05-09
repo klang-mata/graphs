@@ -1,7 +1,10 @@
+from .vertex import Vertex
+from .graph import Graph
+
 class GraphTools():
 
     @staticmethod
-    def depth_first(graph, start_vertex_key, end_vertex_key = None):  
+    def depth_first(graph : Graph, start_vertex_key : int, end_vertex_key : int = None):  
         
         """
         Static method for searching a graph depth first, starting from the specified vertex.
@@ -14,7 +17,7 @@ class GraphTools():
         start_vertex = next((v for v in graph.vertexes if v.key == start_vertex_key), None)
         end_vertex = next((v for v in graph.vertexes if v.key == end_vertex_key), "0")
 
-        def dfs_recursive(vertex):    #recursively searches the whole graph using DFS
+        def dfs_recursive(vertex : Vertex):    #recursively searches the whole graph using DFS
             complete.add(vertex)
             path.append(vertex.key)
 
@@ -22,7 +25,7 @@ class GraphTools():
                 if neighbor not in complete:
                     dfs_recursive(neighbor)
 
-        def dfs_recursive_search(vertex):   #searches for a specified vertex, if found returns the path
+        def dfs_recursive_search(vertex : Vertex):   #searches for a specified vertex, if found returns the path
             
             complete.add(vertex)
             path.append(vertex.key)
@@ -55,7 +58,7 @@ class GraphTools():
 
     @staticmethod
 
-    def breadth_first(graph, start_vertex_key, end_vertex_key = None):  
+    def breadth_first(graph : Graph, start_vertex_key : int, end_vertex_key : int = None):  
         
         """
         Static method for searching a graph breadth first, starting from the specified vertex.
@@ -107,7 +110,7 @@ class GraphTools():
             return path
 
     @staticmethod
-    def connect_all(graph):
+    def connect_all(graph : Graph):
 
         """
         Static method used for connecting all vertexes in a graph, works for both unordered and ordered graphs.
