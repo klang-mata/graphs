@@ -34,7 +34,7 @@ class UnorderedEdge(Edge):
         return f"(Unordered edge connecting {self.vertexes} with weight {self.weight})"
     
 
-class OrderedEdge(Edge):
+class OrderedEdge(Edge): #LM: in graph theory the term is "directed edge", fyi
 
     """
     Represents an ordered (one-way) edge connecting two vertexes. 
@@ -42,6 +42,12 @@ class OrderedEdge(Edge):
     """
 
     def __init__(self, graph : Graph, vertex1 : Vertex, vertex2 : Vertex, weight : int = 1):
+        # LM: fine, just: standard structure of giving a pair of things is:
+        # tuple[vertex, vertex]
+        # iterable[vertex, vertex] *iterable syntax is probably different
+        # and, for the weight, check https://realpython.com/python-asterisk-and-slash-special-parameters/
+        # which is standard for things like weight being kwargs.
+
         self.weight = weight
         self.vertexes = (vertex1, vertex2)
         graph.edges[self] = self.vertexes

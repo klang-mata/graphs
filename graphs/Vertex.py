@@ -65,6 +65,7 @@ class Vertex():
         """
         Returns a list of neighbors
         """
+        # not true, dict.keys() is not a list
 
         return self.neighbors.keys()
 
@@ -77,10 +78,10 @@ class Vertex():
         return len(self.get_neighbors())
     
     def print_neighbors(self):           
-        
+  
         """
         Augmented .get_neigbhors() for printing into console
         """
-        
+        #LM: maybe have a nice __str__?        
         for n in self.neighbors:
             print(n)
