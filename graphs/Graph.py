@@ -1,27 +1,27 @@
 class Graph():
 
     """
-    Simple parent class used for child classes OrderedGraph and UnorderedGraph. Not meant to be instantiated.
+    Simple parent class used for child classes DirectedGraph and UndirectedGraph. Not meant to be instantiated.
     """
-    #LM: for a draft, OK. But, the closer you are to graph theory, the easier it will be to both use and implement.
-    # Graph is a pair of two sets, edges and vertices (vertexes is bad gramma). Therefore, why not use sets?
+    #decided to use sets for the .vertices attribute, .edges is easier to implement as a dictionary
+
     def __init__(self):
-        self.edges = {}     #stores edges and the connected vertexes as a dictionary
-        self.vertexes = []  #lists all created vertexes
-        self.counter = 0    #assigns key numbers to vertexes
 
+        self.edges = {}      #stores edges and the connected vertices as a dictionary
+        self.vertices = set()   #lists all created vertices
+        self.counter = 0        #assigns key numbers to vertices
 
-class OrderedGraph(Graph):
+class DirectedGraph(Graph):
     """
-    Class for ordered graphs. Vertex of this class of graphs are connected using the OrderedEdge class.
+    Class for directed graphs. Vertex of this class of graphs are connected using the DirectedEdge class.
     """
     def __init__(self):
         super().__init__()
 
-class UnorderedGraph(Graph):
+class UndirectedGraph(Graph):
 
     """
-    Class for unordered graphs. Vertex of this class of graphs are connected using the UnorderedEdge class.
+    Class for undirected graphs. Vertex of this class of graphs are connected using the UndirectedEdge class.
     """
 
     def __init__(self):

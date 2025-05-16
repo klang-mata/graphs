@@ -2,11 +2,10 @@ from abc import abstractmethod, ABC
 from .graph import Graph
 from .vertex import Vertex
 
-#LM: included ABC class inheritance
 class Edge(ABC):
 
     """
-    Class not meant to be instantiated, serves as a parent to UnorderedEdge and OrderedEdge child classes
+    Class not meant to be instantiated, serves as a parent to UndirectedEdge and DirectedEdge child classes
     """
 
     def __init__(self):
@@ -14,43 +13,37 @@ class Edge(ABC):
 
     @abstractmethod
     def __repr__(self):
-        #LM: once inheriting from ABC, every `@abstractmethod`-wrapped method must be implemented before instantiating
         pass
 
 
-class UnorderedEdge(Edge):
+class UndirectedEdge(Edge):
 
     """
-    Represents an unordered edge connecting two vertexes. Instance is created when using the UnorderedGraph class.
-    Stores the connected vertexes as a set.
+    Represents an undirected edge connecting two vertices. Instance is created when using the UndirectedGraph class.
+    Stores the connected vertices as a set.
     """
 
     def __init__(self, graph : Graph, vertex1 : Vertex, vertex2 : Vertex, weight : int = 1):
         self.weight = weight
-        self.vertexes = {vertex1, vertex2}
-        graph.edges[self] = self.vertexes
+        self.vertices = {vertex1, vertex2}
+        graph.edges[self] = self.vertices
 
     def __repr__(self):
-        return f"(Unordered edge connecting {self.vertexes} with weight {self.weight})"
+        return f"(Undirected edge connecting {self.vertices} with weight {self.weight})"
     
 
-class OrderedEdge(Edge): #LM: in graph theory the term is "directed edge", fyi
+class DirectedEdge(Edge):
 
     """
-    Represents an ordered (one-way) edge connecting two vertexes. 
-    Instance is created when using the OrderedGraph class. Stores the connected vertexes as a tuple.
+    Represents a directed (one-way) edge connecting two vertices. 
+    Instance is created when using the DirectedGraph class. Stores the connected vertices as a tuple.
     """
 
-    def __init__(self, graph : Graph, vertex1 : Vertex, vertex2 : Vertex, weight : int = 1):
-        # LM: fine, just: standard structure of giving a pair of things is:
-        # tuple[vertex, vertex]
-        # iterable[vertex, vertex] *iterable syntax is probably different
-        # and, for the weight, check https://realpython.com/python-asterisk-and-slash-special-parameters/
-        # which is standard for things like weight being kwargs.
+    def __init__(self, graph: Graph, vertices: tuple[Vertex, Vertex], *, weight: int = 1):
 
         self.weight = weight
-        self.vertexes = (vertex1, vertex2)
-        graph.edges[self] = self.vertexes
+        self.vertices = vertices
+        graph.edges[self] = self.vertices
 
     def __repr__(self):
-        return f"(Ordered edge connecting {self.vertexes[0]} to {self.vertexes[1]} with weight {self.weight})"
+        return f"(Directed edge connecting {self.vertices[0]} to {self.vertices[1]} with weight {self.weight})"

@@ -23,11 +23,12 @@ def main():
     bfsresult = graph_tools.GraphTools.breadth_first(graph1, 0)
     print(bfsresult)
 
-
     node0.remove_neighbor(1)
     node0.print_neighbors()
 
-#if __name__ == "main":
+    dijkstraresult = graph_tools.GraphTools.dijkstra(graph1, 0, 4)
+
+#if __name__ == "test":
 main()
 
 #TODO:
