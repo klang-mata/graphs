@@ -248,7 +248,7 @@ class GraphTools():
     @staticmethod
     def generate_vertices(count):
         """
-        Returns a dict of Vertex objects, accessible by key: nodes[0], nodes[1], etc.
+        Returns a dict of Vertex objects, accessible by key: dict_vertices[0], dict_vertices[1], etc.
         """
         nodes = {}
         for i in range(count):
