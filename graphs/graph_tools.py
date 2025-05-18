@@ -20,7 +20,7 @@ class GraphTools():
         def dfs_recursive(vertex: Vertex):
             complete.add(vertex)
             path.append(vertex.key)
-            for neighbor in vertex.get_neighbors():
+            for neighbor in vertex.get_neighbors(graph):
                 if neighbor not in complete:
                     dfs_recursive(neighbor)
 
@@ -28,9 +28,8 @@ class GraphTools():
             complete.add(vertex)
             path.append(vertex.key)
             if vertex.key == end_vertex_key:
-                print("Path found!")
                 return True
-            for neighbor in vertex.get_neighbors():
+            for neighbor in vertex.get_neighbors(graph):
                 if neighbor not in complete:
                     if dfs_recursive_search(neighbor):
                         return True
@@ -40,8 +39,7 @@ class GraphTools():
         if end_vertex_key is None:
             dfs_recursive(start_vertex)
         elif end_vertex is not None:
-            if not dfs_recursive_search(start_vertex):
-                print("Path not found")
+            dfs_recursive_search(start_vertex)
         else:
             print("No vertex with this key")
 
@@ -55,7 +53,7 @@ class GraphTools():
         """
         Static method for searching a graph breadth first, starting from the specified vertex.
         If no end vertex is specified, searches the whole graph and returns the entire path,
-        if an end vertex is specified, returns only the path leading to that vertex.
+        if an end vertex is specified, returns only the path leading to that vertex (returns [] when no path found).
         """
         
         path = []
@@ -72,7 +70,7 @@ class GraphTools():
                 vertex = queue.pop(0)
                 path.append(vertex.key)
 
-                for v in vertex.get_neighbors():
+                for v in vertex.get_neighbors(graph):
                     if v not in complete:
                         complete.add(v)
                         queue.append(v)
@@ -84,17 +82,15 @@ class GraphTools():
                 vertex = queue.pop(0)
                 path.append(vertex.key)
 
-                for v in vertex.get_neighbors():
+                for v in vertex.get_neighbors(graph):
                     if v.key not in complete and v != end_vertex:
                         complete.add(v.key)
                         queue.append(v)
 
                     elif v.key not in complete and v == end_vertex:
                         path.append(v.key) 
-                        print("Path found!")
                         return path
 
-            print("Path not found.")
             return path
         
 
@@ -102,7 +98,7 @@ class GraphTools():
     def dijkstra(graph: Graph, start_vertex_key: int, end_vertex_key: int = None):
         """
         Uses Dijkstra's algorithm to search most optimal paths to other vertices. If end vertex is specified,
-        returns the shortest path to it, if not returns shortest path to each vertex.
+        returns the shortest path to it (if no path found returns []), if no end specified returns shortest path to each vertex. 
         """
         
         import heapq
@@ -111,7 +107,7 @@ class GraphTools():
         previous = {v.key: None for v in graph.vertices}
         distances[start_vertex_key] = 0
 
-        heap = [(0, start_vertex_key)]
+        heap = [(0, start_vertex_key)]      #min-heap priority queue
 
         visited = set()
 
@@ -123,7 +119,7 @@ class GraphTools():
             current_vertex = next((v for v in graph.vertices if v.key == current_key), None)
             if current_vertex is None:
                 continue
-            for neighbor in current_vertex.get_neighbors():
+            for neighbor in current_vertex.get_neighbors(graph):
                 weight = current_vertex.get_weight(neighbor)
                 distance = current_distance + weight
                 if distance < distances[neighbor.key]:
@@ -136,7 +132,6 @@ class GraphTools():
             shortest_path = []
             current = end_vertex_key
             if distances[current] == float('inf'):
-                print("Path not found.")
                 return []
             while current is not None:
                 shortest_path.append(current)
@@ -151,9 +146,9 @@ class GraphTools():
     @staticmethod
 
     def detect_cycle(graph: Graph):
+
         """
-        Detects cycles in a graph using depth-first search. For undirected graphs, uses parent tracking. For directed graphs,
-        uses a recursion stack. Returns True if a cycle is found, False otherwise.
+        Detects cycles in a graph using depth-first search. Returns True if a cycle is found, False otherwise.
         """
         from .graph import DirectedGraph, UndirectedGraph
 
@@ -166,7 +161,7 @@ class GraphTools():
             def dfs(vertex):
                 visited.add(vertex)
                 rec_stack.add(vertex)
-                for neighbor in vertex.get_neighbors():
+                for neighbor in vertex.get_neighbors(graph):
                     if neighbor not in visited:
                         if dfs(neighbor):
                             return True
@@ -179,16 +174,14 @@ class GraphTools():
             for vertex in graph.vertices:
                 if vertex not in visited:
                     if dfs(vertex):
-                        print("Cycle found!")
                         return True
-            print("No cycles found.")
             return False
 
         else:
             # Undirected graph: use parent tracking
             def dfs(vertex, parent):
                 visited.add(vertex)
-                for neighbor in vertex.get_neighbors():
+                for neighbor in vertex.get_neighbors(graph):
                     if neighbor not in visited:
                         if dfs(neighbor, vertex):
                             return True
@@ -200,9 +193,7 @@ class GraphTools():
             for vertex in graph.vertices:
                 if vertex not in visited:
                     if dfs(vertex, None):
-                        print("Cycle found!")
                         return True
-            print("No cycles found.")
             return False
 
     @staticmethod
@@ -230,7 +221,8 @@ class GraphTools():
     @staticmethod
     def grid(graph: Graph, size_a: int, size_b: int):
         """
-        Creates a grid of vertices in the specified graph. The grid is created by adding neighbors to each vertex.
+        Creates a grid of vertices in the specified graph. The grid is created by adding neighbors to each vertex. 
+        The grid is represented as a 2D list of vertices, which is returned after the grid is created.
         """
         for i in range(size_a):
             for j in range(size_b):
@@ -241,3 +233,26 @@ class GraphTools():
                 if j > 0:
                     vertex.add_neighbor(i * size_b + (j - 1))
 
+                # Store vertices in a 2D list
+                if i == 0 and j == 0:
+                    grid_vertices = [[vertex]]
+                elif j == 0:
+                    grid_vertices.append([vertex])
+                else:
+                    grid_vertices[i].append(vertex)
+
+                # After grid creation, return 2D list of vertices resembling the grid
+                if i == size_a - 1 and j == size_b - 1:
+                    return grid_vertices
+    
+    @staticmethod
+    def generate_vertices(count):
+        """
+        Returns a dict of Vertex objects, accessible by key: nodes[0], nodes[1], etc.
+        """
+        nodes = {}
+        for i in range(count):
+            v = Vertex()
+            nodes[v.key] = v
+            i -=1
+        return nodes

@@ -6,11 +6,13 @@ class Vertex:
     neighbors as well as some utility methods (like get_degree()). Object ID is implemented through a counter
     in the Graph object, referred to as the .key attribute.
     """
-    _id_counter = 0  # class variable
-    vertex_keys = {}
+    _id_counter = 0     #class variable
+    vertex_keys = {}    # dict ID:vertex, succeeds the former generator expressions
 
-    def __init__(self, key=None):
+    def __init__(self, key : int = None):
         if key is not None:
+            if key in Vertex.vertex_keys:
+                raise ValueError(f"Vertex with key {key} already exists.")
             self.key = key
         else:
             self.key = Vertex._id_counter
@@ -18,10 +20,12 @@ class Vertex:
         self.neighbors = {}
         self.graphs = set()
         Vertex.vertex_keys[self.key] = self
-
-    def __repr__(self):
-        return f"(Vertex with key {self.key})"
     
+    def __str__(self):
+        return f"(Vertex with ID {self.key})"
+    
+    def __repr__(self):
+        return f"(ID: {self.key}, neighbors: {self.neighbors}, part of graph(s): {self.graphs})"
 
     def add_to_graph(self, graph: Graph):
         """
@@ -33,19 +37,32 @@ class Vertex:
     def remove_from_graph(self, graph: Graph):
         """
         Remove this vertex from a graph.
+
         """
+        self.remove_all(graph)
+
+        if graph.type == DirectedGraph:             #also takes care of removing the inbound edges
+            for edge in list(graph.edges.keys()):
+                if self in graph.edges[edge]:
+                    for vertex in graph.edges[edge]:
+                        if vertex != self:
+                            vertex.neighbors.pop(self)
+                    del graph.edges[edge]
+
         self.graphs.remove(graph)
         graph.vertices.remove(self)
         self.remove_all(graph)
+        del Vertex.vertex_keys[self.key]
 
     def add_neighbor(self, neighbor_key: int, *,weight: int = 1):
 
         """
         Method for adding a neighbor to a vertex. Works for both undirected and directed graphs.
-        As an input parameter, takes the neighbors .key, not the object itself.
+        As an input parameter, takes the neighbors .key, not the object itself. If vertex is a part of multiple graphs,
+        the method will add the neighbor to all of them.
         """
 
-        from .edge import UndirectedEdge, DirectedEdge
+        from .edge import UndirectedEdge, DirectedEdge          #avoids circular import
 
         for graph in self.graphs:
             neighbor = Vertex.vertex_keys.get(neighbor_key, None)
@@ -86,10 +103,11 @@ class Vertex:
 
     def remove_all(self, graph: Graph):
         """
-        Method for removing all neighbors of a vertex. If directed, only removes the self -> neighbor edge.
+        Method for removing all neighbors (in a specified graph) of a vertex. If directed, only removes the self -> neighbor edge.
         """
         for vertex in graph.vertices:
             self.remove_neighbor(vertex.key)
+
 
     def get_weight(self, neighbor: 'Vertex'):
         """
@@ -97,11 +115,18 @@ class Vertex:
         """
         return self.neighbors[neighbor].weight
 
-    def get_neighbors(self):
+    def get_neighbors(self, graph: Graph = None):
         """
-        Returns a list of neighbors
+        Returns a list of neighbors. If a grapg is specified, returns only the neighbors in that graph.
         """
-        return set(self.neighbors.keys())
+
+        if graph is not None:
+            if graph not in self.graphs:
+                raise ValueError(f"Vertex {self.key} is not part of the specified graph.")
+            return [n for n in self.neighbors if n.graphs == graph]
+        
+        else:
+            return list(self.neighbors.keys())
 
     def get_degree(self):
         """
@@ -115,6 +140,3 @@ class Vertex:
         """
         for n in self.neighbors:
             print(n)
-
-    def __str__(self):
-        return f"(Vertex with ID {self.key})"
